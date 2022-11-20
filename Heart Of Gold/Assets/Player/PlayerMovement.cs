@@ -1,46 +1,48 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+
+
 
 public class PlayerMovement : MonoBehaviour
 {
-    public Vector2 movementVector;
+    private Vector2 movementVector;
     private Rigidbody2D rb;
     public float moveSpeed;
     private Animator animator;
-    private string movementState;
+    
+    public bool useRb;
+
     public void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
-        movementState = "";
-        movementVector = new Vector2(0, 0);
+        movementVector = new Vector2(0f, 0f);
+
     }
-    public void move(InputAction.CallbackContext context)
+    
+
+    private void FixedUpdate()
     {
         
-        movementState = context.phase.ToString();
-        movementVector = context.ReadValue<Vector2>();
-        /*float x = movementVector.x;
-        
-        float y = movementVector.y;
-        Debug.Log("X: " + x + " Y: " + y);
-        */
-        
+        rb.MovePosition(rb.position + movementVector * moveSpeed * Time.fixedDeltaTime);
+
+
 
 
     }
 
-    private void Update()
+    
+    public void SetMovement(Vector2 vector, string state)
     {
-        rb.MovePosition(rb.position + movementVector.normalized * Time.deltaTime * moveSpeed);
+        movementVector = vector;
         
-        
-        
-        if (movementState.Equals("Performed"))
+
+        if (state.Equals("Performed"))
         {
-            animator.SetFloat("X", movementVector.x);
-            animator.SetFloat("Y", movementVector.y);
+            animator.SetFloat("X", vector.x);
+            animator.SetFloat("Y", vector.y);
         }
-                
+
     }
+
+    
 }
