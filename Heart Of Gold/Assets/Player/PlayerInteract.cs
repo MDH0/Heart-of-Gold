@@ -23,18 +23,21 @@ public class PlayerInteract : MonoBehaviour
         RaycastHit2D hit = Physics2D.CircleCast(rb.position, interactRadius, direction, 0, layerMask.value, -Mathf.Infinity, Mathf.Infinity);
 
 
-        
+
         if (hit.collider != null)
+        {
             focusedInteractable = hit.collider.gameObject.GetComponent<IInteractable>();
-        else
-            focusedInteractable = null;
+            return;
+        }
+            
+        focusedInteractable = null;
     }
 
     public void Interact()
     {
         if (focusedInteractable != null)
         {
-            focusedInteractable.getInteracted();
+            focusedInteractable.Interact();
         }
     }
 
